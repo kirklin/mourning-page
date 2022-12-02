@@ -59,6 +59,8 @@ export default function RenderMourningPage(
     ].forEach((GrayFilter) => {
       EL?.style.setProperty(GrayFilter, `grayscale(${Filter_Scale}%)`, "important");
     });
+    EL?.style.setProperty("filter", "url(data:image/svg+xml;utf8,#grayscale);", "important");
+    EL?.style.setProperty("filter", "progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)", "important");
   }
   if (mourningPageMode === "CSS_MIX_BLEND_MODE") {
     const styleStr = "html { position: relative;background: #fff;}html::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, 1);mix-blend-mode: color;pointer-events: none;z-index: 9999;}";
