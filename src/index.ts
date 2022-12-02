@@ -1,4 +1,4 @@
-export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "CSS_MIX_BLEND_MODE" | "GRAYSCALE";
+export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "CSS_MIX_BLEND_MODE" | "CSS_BACKDROP_FILTER" | "GRAYSCALE";
 type BuildPowersOf2LengthArrays<N extends number, R extends never[][]> =
     R[0][N] extends never ? R : BuildPowersOf2LengthArrays<N, [[...R[0], ...R[0]], ...R]>;
 
@@ -64,6 +64,13 @@ export default function RenderMourningPage(
   }
   if (mourningPageMode === "CSS_MIX_BLEND_MODE") {
     const styleStr = "html { position: relative;background: #fff;}html::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, 1);mix-blend-mode: color;pointer-events: none;z-index: 9999;}";
+    const htmlHeadElement = document.querySelector("head") || new Document().createElement("head");
+    const htmlStyleElement = document.createElement("style");
+    htmlStyleElement.innerText = styleStr;
+    htmlHeadElement.appendChild(htmlStyleElement);
+  }
+  if (mourningPageMode === "CSS_BACKDROP_FILTER") {
+    const styleStr = "html { position: relative;}html::before {content: '';position: absolute;inset: 0;backdrop-filter: grayscale(100%);pointer-events: none;z-index: 9999;}";
     const htmlHeadElement = document.querySelector("head") || new Document().createElement("head");
     const htmlStyleElement = document.createElement("style");
     htmlStyleElement.innerText = styleStr;
