@@ -1,4 +1,4 @@
-export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "GRAYSCALE";
+export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "CSS_MIX_BLEND_MODE" | "GRAYSCALE";
 type BuildPowersOf2LengthArrays<N extends number, R extends never[][]> =
     R[0][N] extends never ? R : BuildPowersOf2LengthArrays<N, [[...R[0], ...R[0]], ...R]>;
 
@@ -60,8 +60,15 @@ export default function RenderMourningPage(
       EL?.style.setProperty(GrayFilter, `grayscale(${Filter_Scale}%)`, "important");
     });
   }
+  if (mourningPageMode === "CSS_MIX_BLEND_MODE") {
+    const styleStr = "html { position: relative;background: #fff;}html::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, 1);mix-blend-mode: color;pointer-events: none;z-index: 9999;}";
+    const htmlHeadElement = document.querySelector("head") || new Document().createElement("head");
+    const htmlStyleElement = document.createElement("style");
+    htmlStyleElement.innerText = styleStr;
+    htmlHeadElement.appendChild(htmlStyleElement);
+  }
   if (mourningPageMode === "GRAYSCALE") {
-  // TODO
+    // TODO
   }
   CALL_BACK();
 }
