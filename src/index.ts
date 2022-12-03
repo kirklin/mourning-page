@@ -21,24 +21,24 @@ export type FILTER_SCALE = RangeOf2<0, 100>;
 
 /**
  * RenderMourningPage
- * @param EL Element DOM element to alter
+ * @param selector Element DOM element to alter
  * @param mourningPageMode "DEFAULT" | "CSS_FILTER" | "GRAYSCALE"
  * @param Filter_Scale Integer 0 - 100
  * @param CALL_BACK fn Optional callback function to invoke when done, or an error occurs
  * @constructor
  */
 export default function RenderMourningPage(
-  EL?: HTMLElement,
+  selector?: string,
   mourningPageMode: MourningPageMode = "CSS_FILTER",
   Filter_Scale: FILTER_SCALE = 100,
   CALL_BACK?: Function,
 ) {
+  const EL: HTMLObjectElement | HTMLElement | HTMLMapElement | HTMLLinkElement | HTMLHtmlElement | HTMLAnchorElement | HTMLAreaElement | HTMLAudioElement | HTMLBaseElement | HTMLQuoteElement | HTMLBodyElement | HTMLBRElement | HTMLButtonElement | HTMLCanvasElement | HTMLTableCaptionElement | HTMLTableColElement | HTMLDataElement | HTMLDataListElement | HTMLModElement | HTMLDetailsElement | HTMLDialogElement | HTMLDivElement | HTMLDListElement | HTMLEmbedElement | HTMLFieldSetElement | HTMLFormElement | HTMLHeadingElement | HTMLHeadElement | HTMLHRElement | HTMLIFrameElement | HTMLImageElement | HTMLInputElement | HTMLLabelElement | HTMLLegendElement | HTMLLIElement | HTMLMenuElement | HTMLMetaElement | HTMLMeterElement | HTMLOListElement | HTMLOptGroupElement | HTMLOptionElement | HTMLOutputElement | HTMLParagraphElement | HTMLPictureElement | HTMLPreElement | HTMLProgressElement | HTMLScriptElement | HTMLSelectElement | HTMLSlotElement | HTMLSourceElement | HTMLSpanElement | HTMLStyleElement | HTMLTableElement | HTMLTableSectionElement | HTMLTableCellElement | HTMLTemplateElement | HTMLTextAreaElement | HTMLTimeElement | HTMLTitleElement | HTMLTableRowElement | HTMLTrackElement | HTMLUListElement | HTMLVideoElement | null
+      = document.querySelector(selector ?? "html");
   if (!mourningPageMode ?? null) {
     mourningPageMode = "CSS_FILTER";
   }
-  if (!EL ?? null) {
-    EL = document.querySelector<HTMLHtmlElement>("html") || new Document().createElement("html");
-  }
+
   if (typeof CALL_BACK != "function") {
     CALL_BACK = (err: Error) => {
       if (err) {

@@ -49,7 +49,7 @@ renderGrayPage(null, "CSS_FILTER", 0);
 #### 参数说明
 
 ```
-第一个参数EL : 输入一个DOM元素
+第一个参数selector : 输入一个DOM元素
 第二个参数 mourningPageMode:  值为 "CSS_FILTER" 时使用CSS_FILTER滤镜，值为"DEFAULT"时恢复默认色彩,
 第三个参数 Filter_Scale = 100 支持（0-100）灰度等级,值为0
 ```
