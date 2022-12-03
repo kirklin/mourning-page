@@ -63,14 +63,14 @@ export default function RenderMourningPage(
     EL?.style.setProperty("filter", "progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)", "important");
   }
   if (mourningPageMode === "CSS_MIX_BLEND_MODE") {
-    const styleStr = "html { position: relative;background: #fff;}html::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, 1);mix-blend-mode: color;pointer-events: none;z-index: 9999;}";
+    const styleStr = `html { position: relative;background: #fff;}html::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, ${Filter_Scale / 100});mix-blend-mode: color;pointer-events: none;z-index: 9999;}`;
     const htmlHeadElement = document.querySelector("head") || new Document().createElement("head");
     const htmlStyleElement = document.createElement("style");
     htmlStyleElement.innerText = styleStr;
     htmlHeadElement.appendChild(htmlStyleElement);
   }
   if (mourningPageMode === "CSS_BACKDROP_FILTER") {
-    const styleStr = "html { position: relative;}html::before {content: '';position: absolute;inset: 0;backdrop-filter: grayscale(100%);pointer-events: none;z-index: 9999;}";
+    const styleStr = `html { position: relative;}html::before {content: '';position: absolute;inset: 0;backdrop-filter: grayscale(${Filter_Scale}%);pointer-events: none;z-index: 9999;}`;
     const htmlHeadElement = document.querySelector("head") || new Document().createElement("head");
     const htmlStyleElement = document.createElement("style");
     htmlStyleElement.innerText = styleStr;

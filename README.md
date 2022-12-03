@@ -35,7 +35,7 @@ npm i mourning-page
 ### 方式一：CSS网页滤镜
 
 ```js
-import renderGrayPage from "mourning-page"
+import renderGrayPage from "mourning-page";
 // CSS_FILTER方式一键变灰
 renderGrayPage();
 // 一键变灰支持灰度等级（0-100）
@@ -73,8 +73,8 @@ html {
 ### 方式二：`backdrop-filter`
 
 ```js
-import renderGrayPage from "mourning-page"
-renderGrayPage(null,"CSS_BACKDROP_FILTER")
+import renderGrayPage from "mourning-page";
+renderGrayPage(null, "CSS_BACKDROP_FILTER");
 ```
 
 #### 封装原理
@@ -97,8 +97,8 @@ html::before {
 
 
 ```js
-import renderGrayPage from "mourning-page"
-renderGrayPage(null,"CSS_BACKDROP_FILTER")
+import renderGrayPage from "mourning-page";
+renderGrayPage(null, "CSS_BACKDROP_FILTER");
 ```
 
 #### 封装原理
