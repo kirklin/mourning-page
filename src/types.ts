@@ -1,4 +1,4 @@
-export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "CSS_MIX_BLEND_MODE" | "CSS_BACKDROP_FILTER" | "GRAYSCALE";
+export type MourningPageMode = "DEFAULT" | "CSS_FILTER" | "CSS_MIX_BLEND_MODE" | "CSS_BACKDROP_FILTER";
 
 type BuildPowersOf2LengthArrays<N extends number, R extends never[][]> =
     R[0][N] extends never ? R : BuildPowersOf2LengthArrays<N, [[...R[0], ...R[0]], ...R]>;

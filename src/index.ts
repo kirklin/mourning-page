@@ -1,57 +1,101 @@
 import type { FILTER_SCALE, MourningPageMode } from "./types";
 import { appendStyle } from "./utils";
 
-/**
- * RenderMourningPage
- * @param selector Element DOM element to alter
- * @param mourningPageMode "DEFAULT" | "CSS_FILTER" | "GRAYSCALE"
- * @param Filter_Scale Integer 0 - 100
- * @param CALL_BACK fn Optional callback function to invoke when done, or an error occurs
- * @constructor
- */
-export default function RenderMourningPage(
-  selector?: string,
-  mourningPageMode?: MourningPageMode,
-  Filter_Scale: FILTER_SCALE = 100,
-  CALL_BACK?: Function,
-) {
-  const EL: HTMLObjectElement | HTMLElement | HTMLMapElement | HTMLLinkElement | HTMLHtmlElement | HTMLAnchorElement | HTMLAreaElement | HTMLAudioElement | HTMLBaseElement | HTMLQuoteElement | HTMLBodyElement | HTMLBRElement | HTMLButtonElement | HTMLCanvasElement | HTMLTableCaptionElement | HTMLTableColElement | HTMLDataElement | HTMLDataListElement | HTMLModElement | HTMLDetailsElement | HTMLDialogElement | HTMLDivElement | HTMLDListElement | HTMLEmbedElement | HTMLFieldSetElement | HTMLFormElement | HTMLHeadingElement | HTMLHeadElement | HTMLHRElement | HTMLIFrameElement | HTMLImageElement | HTMLInputElement | HTMLLabelElement | HTMLLegendElement | HTMLLIElement | HTMLMenuElement | HTMLMetaElement | HTMLMeterElement | HTMLOListElement | HTMLOptGroupElement | HTMLOptionElement | HTMLOutputElement | HTMLParagraphElement | HTMLPictureElement | HTMLPreElement | HTMLProgressElement | HTMLScriptElement | HTMLSelectElement | HTMLSlotElement | HTMLSourceElement | HTMLSpanElement | HTMLStyleElement | HTMLTableElement | HTMLTableSectionElement | HTMLTableCellElement | HTMLTemplateElement | HTMLTextAreaElement | HTMLTimeElement | HTMLTitleElement | HTMLTableRowElement | HTMLTrackElement | HTMLUListElement | HTMLVideoElement | null
-      = document.querySelector(selector ?? "html");
-  mourningPageMode = mourningPageMode ?? "CSS_FILTER";
+// 定义悼念页面策略接口
+interface MourningPageStrategy {
+  render(config: MourningPageConfig): void;
+}
+// 定义悼念页面策略类
+class DefaultMourningPageStrategy implements MourningPageStrategy {
+  render(config: MourningPageConfig): void {
+    const el: HTMLElement | null = document.querySelector(config.selector);
+    ["filter", "-webkit-filter", "-moz-filter", "-ms-filter", "-o-filter"].forEach((filter) => {
+      el?.style.setProperty(filter, "none", "important");
+    });
+  }
+}
+class CssFilterMourningPageStrategy implements MourningPageStrategy {
+  render(config: MourningPageConfig): void {
+    const el: HTMLElement | null = document.querySelector(config.selector);
+    ["filter", "-webkit-filter", "-moz-filter", "-ms-filter", "-o-filter"].forEach((filter) => {
+      el?.style.setProperty(filter, `grayscale(${config.filterScale}%)`, "important");
+    });
+    el?.style.setProperty(
+      "filter",
+      "url(data:image/svg+xml;utf8,#grayscale);",
+      "important",
+    );
+    el?.style.setProperty(
+      "filter",
+      "progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)",
+      "important",
+    );
+  }
+}
+class CssMixBlendModeMourningPageStrategy implements MourningPageStrategy {
+  render(config: MourningPageConfig): void {
+    const styleStr = `${config.selector} {
+      position: relative;
+      background: #fff;
+    }
+    ${config.selector}::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, ${config.filterScale / 100});
+      mix-blend-mode: color;
+      pointer-events: none;
+      z-index: 9999;
+      }`;
+    appendStyle(styleStr);
+  }
+}
+class CssBackdropFilterMourningPageStrategy implements MourningPageStrategy {
+  render(config: MourningPageConfig): void {
+    const styleStr = `${config.selector} {
+     position: relative; 
+     } 
+     ${config.selector}::before {
+      content: ''; 
+      position: absolute; 
+      inset: 0; 
+      backdrop-filter: grayscale(${config.filterScale}%); 
+      pointer-events: none; 
+      z-index: 9999; 
+      }`;
+    appendStyle(styleStr);
+  }
+}
 
-  if (typeof CALL_BACK != "function") {
-    CALL_BACK = (err: Error) => {
-      if (err) {
-        throw err;
-      }
-    };
+export class MourningPageConfig {
+  selector: string;
+  mode: MourningPageMode;
+  filterScale: FILTER_SCALE;
+  callback?: Function;
+
+  constructor(selector: string, mode: MourningPageMode, filterScale: FILTER_SCALE = 100, callback?: Function) {
+    this.selector = selector;
+    this.mode = mode;
+    this.filterScale = filterScale;
+    this.callback = callback;
   }
-  if (mourningPageMode === "DEFAULT") {
-    [
-      "filter", "-webkit-filter", "-moz-filter", "-ms-filter", "-o-filter",
-    ].forEach((GrayFilter) => {
-      EL?.style.setProperty(GrayFilter, "none", "important");
-    });
+}
+
+export class RenderMourningPage {
+  private static strategies: Map<MourningPageMode, MourningPageStrategy> = new Map([
+    ["DEFAULT", new DefaultMourningPageStrategy()],
+    ["CSS_FILTER", new CssFilterMourningPageStrategy()],
+    ["CSS_MIX_BLEND_MODE", new CssMixBlendModeMourningPageStrategy()],
+    ["CSS_BACKDROP_FILTER", new CssBackdropFilterMourningPageStrategy()],
+  ]);
+
+  static render(config: MourningPageConfig): void {
+    const strategy = this.strategies.get(config.mode);
+    if (strategy) {
+      strategy.render(config);
+    }
+    if (config.callback && typeof config.callback === "function") {
+      config.callback();
+    }
   }
-  if (mourningPageMode === "CSS_FILTER") {
-    [
-      "filter", "-webkit-filter", "-moz-filter", "-ms-filter", "-o-filter",
-    ].forEach((GrayFilter) => {
-      EL?.style.setProperty(GrayFilter, `grayscale(${Filter_Scale}%)`, "important");
-    });
-    EL?.style.setProperty("filter", "url(data:image/svg+xml;utf8,#grayscale);", "important");
-    EL?.style.setProperty("filter", "progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)", "important");
-  }
-  if (mourningPageMode === "CSS_MIX_BLEND_MODE") {
-    const styleStr = `${selector ?? "html"} { position: relative;background: #fff;}${selector ?? "html"}::before {content: '';position: absolute;inset: 0;background: rgba(0, 0, 0, ${Filter_Scale / 100});mix-blend-mode: color;pointer-events: none;z-index: 9999;}`;
-    appendStyle(styleStr);
-  }
-  if (mourningPageMode === "CSS_BACKDROP_FILTER") {
-    const styleStr = `${selector ?? "html"} { position: relative;}${selector ?? "html"}::before {content: '';position: absolute;inset: 0;backdrop-filter: grayscale(${Filter_Scale}%);pointer-events: none;z-index: 9999;}`;
-    appendStyle(styleStr);
-  }
-  if (mourningPageMode === "GRAYSCALE") {
-    // TODO
-  }
-  CALL_BACK();
 }

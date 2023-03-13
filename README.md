@@ -35,24 +35,24 @@ npm i mourning-page
 ### 方式一：CSS网页滤镜
 
 ```js
-import renderGrayPage from "mourning-page";
-// CSS_FILTER方式一键变灰
-renderGrayPage();
-// 一键变灰支持灰度等级（0-100）
-renderGrayPage(null, "CSS_FILTER", 95);
-// 一键变灰还原1
-renderGrayPage(null, "DEFAULT");
-// 一键变灰还原方式2
-renderGrayPage(null, "CSS_FILTER", 0);
+RenderMourningPage.render({
+  selector: "body",
+  mode: "CSS_MIX_BLEND_MODE",
+  filterScale: 100,
+  callback: () => {
+    console.log("Mourning page applied successfully!");
+  },
+});
 ```
 
-#### 参数说明
+#### 配置选项
+MourningPage 构造函数接受一个配置对象，该对象包含以下属性：
 
-```
-第一个参数selector : 输入一个DOM元素
-第二个参数 mourningPageMode:  值为 "CSS_FILTER" 时使用CSS_FILTER滤镜，值为"DEFAULT"时恢复默认色彩,
-第三个参数 Filter_Scale = 100 支持（0-100）灰度等级,值为0
-```
+- `selector` (string) - 选择要应用悼念页面样式的 DOM 元素选择器，默认为 "html"。
+- `mode` (MourningPageMode) - 表示要使用的悼念页面模式的枚举值。可以是 "DEFAULT"、"CSS_FILTER"、"CSS_MIX_BLEND_MODE"、"CSS_BACKDROP_FILTER" 中的一个。
+- `filterScale` (number) - 一个介于 0 和 100 之间的数字，表示要应用的滤镜程度，默认为 100。
+- `callback` (Function) - 可选的回调函数，当悼念页面应用完成或发生错误时会被调用。
+
 
 #### 封装原理
 
