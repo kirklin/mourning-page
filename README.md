@@ -35,9 +35,10 @@ npm i mourning-page
 ### 方式一：CSS网页滤镜
 
 ```js
+import { RenderMourningPage } from "mourning-page";
 RenderMourningPage.render({
-  selector: "body",
-  mode: "CSS_MIX_BLEND_MODE",
+  selector: "html",
+  mode: "CSS_FILTER",
   filterScale: 100,
   callback: () => {
     console.log("Mourning page applied successfully!");
@@ -73,8 +74,15 @@ html {
 ### 方式二：`backdrop-filter`
 
 ```js
-import renderGrayPage from "mourning-page";
-renderGrayPage(null, "CSS_BACKDROP_FILTER");
+import { RenderMourningPage } from "mourning-page";
+RenderMourningPage.render({
+    selector: "html",
+    mode: "CSS_BACKDROP_FILTER",
+    filterScale: 100,
+    callback: () => {
+        console.log("Mourning page applied successfully!");
+    },
+});
 ```
 
 #### 封装原理
@@ -97,8 +105,15 @@ html::before {
 
 
 ```js
-import renderGrayPage from "mourning-page";
-renderGrayPage(null, "CSS_BACKDROP_FILTER");
+import { RenderMourningPage } from "mourning-page";
+RenderMourningPage.render({
+    selector: "html",
+    mode: "CSS_MIX_BLEND_MODE",
+    filterScale: 100,
+    callback: () => {
+        console.log("Mourning page applied successfully!");
+    },
+});
 ```
 
 #### 封装原理
