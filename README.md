@@ -76,12 +76,12 @@ html {
 ```js
 import { RenderMourningPage } from "mourning-page";
 RenderMourningPage.render({
-    selector: "html",
-    mode: "CSS_BACKDROP_FILTER",
-    filterScale: 100,
-    callback: () => {
-        console.log("Mourning page applied successfully!");
-    },
+  selector: "html",
+  mode: "CSS_BACKDROP_FILTER",
+  filterScale: 100,
+  callback: () => {
+    console.log("Mourning page applied successfully!");
+  },
 });
 ```
 
@@ -107,12 +107,12 @@ html::before {
 ```js
 import { RenderMourningPage } from "mourning-page";
 RenderMourningPage.render({
-    selector: "html",
-    mode: "CSS_MIX_BLEND_MODE",
-    filterScale: 100,
-    callback: () => {
-        console.log("Mourning page applied successfully!");
-    },
+  selector: "html",
+  mode: "CSS_MIX_BLEND_MODE",
+  filterScale: 100,
+  callback: () => {
+    console.log("Mourning page applied successfully!");
+  },
 });
 ```
 
