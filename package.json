@@ -1,7 +1,7 @@
 {
   "name": "mourning-page",
   "type": "module",
-  "version": "0.0.5-beta.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@7.12.2",
   "description": "",
   "author": "Kirk Lin <https://github.com/kirklin>",
